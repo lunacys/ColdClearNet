@@ -1,0 +1,4 @@
+[submodule "3rdParty/cold-clear"]
+	path = 3rdParty/cold-clear
+	url = https://github.com/MinusKelvin/cold-clear.git
+	branch = master
