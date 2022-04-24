@@ -4,8 +4,58 @@ namespace ColdClearNet.Example;
 
 class Program
 {
-    public static void Main(string[] args)
+    private static Board _board;
+    private static Random _random = new Random();
+
+    public static async Task Main(string[] args)
     {
+        _board = new Board();
+
+        Console.WriteLine("Init CC");
+        using var cc = new ColdClear(ColdClear.DefaultOptions, ColdClear.DefaultWeights);
+
+        //await Task.Delay(2000);
+
+        //cc.AddNextPieceAsync(GetRandomPiece());
+        //cc.RequestNextMove(0);
+
+        Piece piece = GetRandomPiece();
+
+        while (true)
+        {
+            cc.AddNextPieceAsync(piece);
+
+            await Task.Delay(150);
+            
+            cc.RequestNextMove(0);
+
+            await Task.Delay(150);
+
+            var move = new Move();
+            var planPlacement = new PlanPlacement[32];
+            var planLength = 0U;
+            
+            var pollStatus = cc.PollNextMove(move, planPlacement, ref planLength);
+            //var pollStatus = cc.BlockNextMove(move, planPlacement, ref planLength);
+
+            await Task.Delay(150);
+
+            if (pollStatus == BotPollStatus.MoveProvided)
+            {
+                //Console.WriteLine();
+                for (int i = 0; i < 4; i++)
+                {
+                    _board.Set(move.ExpectedX[i], move.ExpectedY[i], piece);
+                }
+            }
+
+            _board.Print();
+
+            piece = GetRandomPiece();
+
+            await Task.Delay(150);
+        }
+
         /*Task t = Task.Run(() =>
         {
             var book = IntPtr.Zero;
@@ -63,5 +113,14 @@ class Program
         });
 
         await t;*/
+    }
+
+    private static Piece GetRandomPiece()
+    {
+        var r = _random.Next(0, 7);
+
+        var en = Enumerable.Range(0, 7).ToArray();
+
+        return (Piece)en[r];
     }
 }
