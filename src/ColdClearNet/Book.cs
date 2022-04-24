@@ -9,12 +9,19 @@ public sealed class Book : IDisposable
         _book = book;
     }
 
-    public static Book LoadFromFile(string path)
+    /// <summary>
+    /// Loads an opening book from the specified file path.
+    /// This supports both `.ccbook` and `.ccdb` books.
+    /// If an error occurs, `NULL` is returned instead.
+    /// </summary>
+    /// <param name="path">File path</param>
+    /// <returns>A book loaded from file</returns>
+    public static Book? LoadFromFile(string path)
     {
         var ptr = ColdClearInterop.LoadBookFromFile(path);
 
         if (ptr == IntPtr.Zero)
-            throw new Exception("Could not read the book requested");
+            return null;
 
         return new Book(ptr);
     }
