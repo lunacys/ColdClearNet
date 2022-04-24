@@ -47,7 +47,7 @@ internal static class ColdClearInterop
     public static extern IntPtr LoadBookFromFile([MarshalAs(UnmanagedType.LPStr)] string path);
 
     [DllImport(DllName, EntryPoint = "cc_load_book_from_memory")]
-    public static extern IntPtr LoadBookFromMemory(short[] data, uint length);
+    public static extern IntPtr LoadBookFromMemory(byte[] data, uint length);
     
     [DllImport(DllName, EntryPoint = "cc_destroy_book")]
     public static extern void DestroyBook(IntPtr book);

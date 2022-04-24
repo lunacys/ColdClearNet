@@ -26,6 +26,23 @@ public sealed class Book : IDisposable
         return new Book(ptr);
     }
 
+    /// <summary>
+    /// Loads an opening book from the specified book file contents.
+    /// This only supports `.ccbook` books.
+    /// If an error occurs, `null` is returned instead.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static Book? LoadFromMemory(byte[] data)
+    {
+        var ptr = ColdClearInterop.LoadBookFromMemory(data, (uint) data.Length);
+
+        if (ptr == IntPtr.Zero)
+            return null;
+
+        return new Book(ptr);
+    }
+
 
     private void ReleaseUnmanagedResources()
     {
