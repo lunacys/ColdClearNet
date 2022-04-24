@@ -127,12 +127,10 @@ public sealed class ColdClear : IDisposable
     /// </summary>
     /// <param name="piece"></param>
     /// <returns></returns>
-    public async Task AddNextPieceAsync(Piece piece)
+    public void AddNextPieceAsync(Piece piece)
     {
-        await Task.Run(() =>
-        {
-            ColdClearInterop.AddNextPieceAsync(_bot, piece);
-        });
+        ColdClearInterop.AddNextPieceAsync(_bot, piece);
+        //return Task.CompletedTask;
     }
 
     public void RequestNextMove(int incomingGarbage)
@@ -140,7 +138,7 @@ public sealed class ColdClear : IDisposable
         ColdClearInterop.RequestNextMove(_bot, (uint) incomingGarbage);
     }
 
-    public BotPollStatus PollNextMove(out Move move, out PlanPlacement[] plan)
+    public BotPollStatus PollNextMove(Move move, PlanPlacement[] plan)
     {
         move = new Move();
         var planLength = 32U;
@@ -148,6 +146,11 @@ public sealed class ColdClear : IDisposable
         var status = ColdClearInterop.PollNextMove(_bot, move, plan, ref planLength);
         plan = plan.Take((int)planLength).ToArray();
         return status;
+    }
+
+    public BotPollStatus PollNextMove(Move move, PlanPlacement[] plan, ref uint planLength)
+    {
+        return ColdClearInterop.PollNextMove(_bot, move, plan, ref planLength);
     }
 
     public async Task<(Move move, PlanPlacement[] plan)?> NextMoveAsync(int incomingGarbage)
