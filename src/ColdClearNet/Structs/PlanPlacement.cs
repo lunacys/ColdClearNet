@@ -8,9 +8,9 @@ public class PlanPlacement
     public TspinStatus TSpin;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public short[] ExpectedX = null!;
+    public bool[] ExpectedX = null!;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public short[] ExpectedY = null!;
+    public bool[] ExpectedY = null!;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public int[] ClearedLines = null!;
