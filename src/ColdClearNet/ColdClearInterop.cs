@@ -1,11 +1,10 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ColdClearNet;
 
 internal static class ColdClearInterop
 {
-    public const string DllName = "cold_clear.dll";
+    public const string DllName = "cold_clear";
 
 
     [DllImport(DllName, EntryPoint = "cc_launch_async")]
@@ -15,7 +14,7 @@ internal static class ColdClearInterop
     public static extern IntPtr LaunchWithBoardAsync(Options options, Weights weights, IntPtr book,
         byte[] field, uint bag_remain, ref Piece hold, [MarshalAs(UnmanagedType.U1)] bool b2b, uint combo, Piece[] queue,
         uint count);
-
+    
     [DllImport(DllName, EntryPoint = "cc_destroy_async")]
     public static extern void DestroyAsync(IntPtr bot);
 
@@ -29,19 +28,19 @@ internal static class ColdClearInterop
     public static extern void RequestNextMove(IntPtr bot, uint incoming);
 
     [DllImport(DllName, EntryPoint = "cc_poll_next_move")]
-    public static extern BotPollStatus PollNextMove(IntPtr bot, [Out] Move move, [Out] PlanPlacement[] plan, ref uint plan_length);
+    public static extern BotPollStatus PollNextMove(IntPtr bot, out Move move, [In, Out] PlanPlacement[] plan, ref uint plan_length);
 
     [DllImport(DllName, EntryPoint = "cc_block_next_move")]
-    public static extern BotPollStatus BlockNextMove(IntPtr bot, [Out] Move move, [Out] PlanPlacement[] plan, ref uint plan_length);
+    public static extern BotPollStatus BlockNextMove(IntPtr bot, out Move move, [In, Out] PlanPlacement[] plan, ref uint plan_length);
     
     [DllImport(DllName, EntryPoint = "cc_default_options")]
-    public static extern void DefaultOptions([Out] Options options);
+    public static extern void DefaultOptions(out Options options);
     
     [DllImport(DllName, EntryPoint = "cc_default_weights")]
-    public static extern void DefaultWeights([Out] Weights weights);
+    public static extern void DefaultWeights(out Weights weights);
     
     [DllImport(DllName, EntryPoint = "cc_fast_weights")]
-    public static extern void FastWeights([Out] Weights weights);
+    public static extern void FastWeights(out Weights weights);
 
     [DllImport(DllName, EntryPoint = "cc_load_book_from_file")]
     public static extern IntPtr LoadBookFromFile([MarshalAs(UnmanagedType.LPStr)] string path);

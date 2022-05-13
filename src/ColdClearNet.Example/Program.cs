@@ -30,12 +30,11 @@ class Program
             cc.RequestNextMove(0);
 
             await Task.Delay(150);
-
-            var move = new Move();
+            
             var planPlacement = new PlanPlacement[32];
             var planLength = 0U;
             
-            var pollStatus = cc.PollNextMove(move, planPlacement, ref planLength);
+            var pollStatus = cc.PollNextMove(out var move, planPlacement, ref planLength);
             //var pollStatus = cc.BlockNextMove(move, planPlacement, ref planLength);
 
             await Task.Delay(150);
